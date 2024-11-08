@@ -1,10 +1,5 @@
 import json
 import random
-import nltk
-from nltk.corpus import wordnet
-
-nltk.download('wordnet')
-
 
 input_file = 'datasets/history.json'  
 output_file = 'datasets/ft_1.json'
@@ -19,15 +14,6 @@ augmentation_factor = 2
 # new dataset
 expanded_dataset = []
 
-
-def get_syn(word, n):
-    synonyms = []
-    for syn in wordnet.sysnets(word):
-        for lemma in syn.lemmas()[:n]:
-            synonyms.append(lemma.name())
-        return set(synonyms)
-
-
 # create new entries
 def create_shuffled_entry(entry):
 
@@ -39,22 +25,9 @@ def create_shuffled_entry(entry):
 
     # theme
     theme = [group['group'] for group in entry['answers']]
-    synonyms = []
-    for c in theme:
-        for i in range(3):
-            synonyms.append([get_syn(c)])
-
-    # create (words), (instruction), response
-    instruction = f"Task: Identify 4 groups of 4 words from the word list based on thematic similarities."
 
     response_parts = []
-    group_names = ["Group 1", "Group 2", "Group 3", "Group 4"]
-    word_groups = [words[i:i + 4] for i in range(0, len(words), 4)]
-
-    #for idx, group in enumerate(word_groups):
-    # Assign each group to one of the named groups, e.g., "Group 1"
-       # response_parts.append(f"{group_names[idx]}: {', '.join(group)}")
-
+    
     response = "\n".join(response_parts)
 
     for group in word_groups:
